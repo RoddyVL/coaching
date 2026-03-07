@@ -1,0 +1,2 @@
+class Mediapipe < ApplicationRecord
+end
