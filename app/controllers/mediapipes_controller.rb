@@ -6,13 +6,15 @@ class MediapipesController < ApplicationController
 
   def create
     orchestrator = PostureAnalysis::AnalysisOrchestrator.new(
-      landmarks_normalizer: PostureAnalysis::NormalizeLandmarks.new(safe_params),
-      kpi_computer: PostureAnalysis::KPIComputer.new,
-      kpi_classifyer: PostureAnalysis::KPIClassifyer.new,
-      feedback_generator: PostureAnalysis::FeedbackGenerator.new
+      landmarks_normalizer: PostureAnalysis::NormalizeLandmarks,
+      kpi_computer: PostureAnalysis::KPIComputer,
+      kpi_classifier: PostureAnalysis::KPIClassifier,
+      feedback_generator: PostureAnalysis::FeedbackGenerator,
+      params: safe_params
     )
 
     result = orchestrator.call
+    binding.irb
   end
 
   private

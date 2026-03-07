@@ -4,21 +4,21 @@
 module PostureAnalysis
   class AnalysisOrchestrator
     def initialize(args)
-      @landmarks = args[:landmarks_normalizer]
+      @params = args[:params]
+      @landmarks_normalizer = args[:landmarks_normalizer]
       @kpi_computer = args[:kpi_computer]
-      @kpi_classifyer = args[:kpi_classifyer]
+      @kpi_classifier = args[:kpi_classifier]
       @feedback_generator = args[:feedback_generator]
     end
 
     def call
-      kpis = kpi_computer.call(landmarks)
+      landmarks = landmarks_normalizer.new(params)
+      kpis = kpi_computer.new(landmarks).call
+      classify_kpis = kpi_classifier.new(kpis).call
+      feedback_generator.new(classify_kpis).call
     end
-    # 1. normalize data
-    # 2. compute KPI
-    # 3. ClassifyKPI
-    # 4. Generate feedback
-    private
-    attr_reader :landmarks, :kpi_computer, :kpi_classifyer, :feedback_generator
 
+    private
+    attr_reader :landmarks_normalizer, :params, :kpi_computer, :kpi_classifier, :feedback_generator
   end
 end
