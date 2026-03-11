@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "mediapipes#index"
   resources :mediapipes
-  post "/pose_landmarks", to: "mediapipes#create"
+  post "/pose_landmarks", to: "mediapipes#analysis"
 end

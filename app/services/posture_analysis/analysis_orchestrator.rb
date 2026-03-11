@@ -14,8 +14,8 @@ module PostureAnalysis
     def call
       landmarks = landmarks_normalizer.new(params)
       kpis = kpi_computer.new(landmarks).call
-      classify_kpis = kpi_classifier.new(kpis).call
-      feedback_generator.new(classify_kpis).call
+      classify_kpi = kpi_classifier.new(kpis).call
+      feedback = feedback_generator.new(classify_kpi).call
     end
 
     private

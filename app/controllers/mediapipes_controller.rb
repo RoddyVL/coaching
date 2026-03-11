@@ -4,7 +4,7 @@ class MediapipesController < ApplicationController
   def index
   end
 
-  def create
+  def analysis
     orchestrator = PostureAnalysis::AnalysisOrchestrator.new(
       landmarks_normalizer: PostureAnalysis::NormalizeLandmarks,
       kpi_computer: PostureAnalysis::KPIComputer,
@@ -13,8 +13,8 @@ class MediapipesController < ApplicationController
       params: safe_params
     )
 
-    result = orchestrator.call
-    binding.irb
+    feedback = orchestrator.call
+    render json: { feedback: }
   end
 
   private

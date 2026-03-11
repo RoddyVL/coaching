@@ -25,9 +25,11 @@ module PostureAnalysis
 
     LANDMARKS.each_with_index do |name, index|
       define_method(name) do
-        landmarks[index]
+        Landmark.new(**landmarks[index])
       end
     end
+
+    Landmark = Struct.new(:x, :y, :z, :visibility)
 
     private
     attr_reader :landmarks

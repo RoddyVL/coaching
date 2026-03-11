@@ -1,15 +1,14 @@
-<h1 class="text-center mt-2">Hello From Index</h1>
+<h1>Hi I'm your AI coach: upload an image of your stance so I can</h1>
+  <input accept="image/*" type='file' id="imgInp" />
 
-  <h1>Analyse de Posture : Module Garde</h1>
+<div class="container">
+  <img id="input_image" src="#" alt="your image" />
+  <canvas id="output_canvas"></canvas>
+</div>
 
-  <div class="container">
-      <img id="input_image" src="assets/boxing-stance.jpg" alt="Pose de boxe à analyser">
-      <canvas id="output_canvas"></canvas>
-  </div>
+<button id="analyse_btn">Analyser la posture</button>
 
-  <button id="analyse_btn">Analyser la posture</button>
-
-  <div id="results">
-      <h3>Feedback :</h3>
-      <pre id="data_output">En attente d'analyse...</pre>
-  </div>
+<div id="results">
+    <h3>Feedback :</h3>
+    <pre id="data_output">En attente d'analyse...</pre>
+</div>
