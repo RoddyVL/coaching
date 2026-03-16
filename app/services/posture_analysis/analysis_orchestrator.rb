@@ -14,11 +14,12 @@ module PostureAnalysis
     def call
       landmarks = landmarks_normalizer.new(params)
       kpis = kpi_computer.new(landmarks).call
+      binding.irb
       classify_kpi = kpi_classifier.new(kpis).call
       feedback = feedback_generator.new(classify_kpi).call
     end
 
     private
-    attr_reader :landmarks_normalizer, :params, :kpi_computer, :kpi_classifier, :feedback_generator
+    attr_reader :params, :landmarks_normalizer, :kpi_computer, :kpi_classifier, :feedback_generator
   end
 end
