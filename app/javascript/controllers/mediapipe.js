@@ -51,7 +51,7 @@ pose.onResults(async (results) => {
         "Content-Type": "application/json",
         "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
       },
-      body: JSON.stringify({ landmarks: results.poseLandmarks })
+      body: JSON.stringify({ landmarks: results.poseLandmarks, stance: 'southpaw' })
     });
 
     const data = await response.json();

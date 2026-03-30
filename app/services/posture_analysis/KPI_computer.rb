@@ -1,5 +1,8 @@
 module PostureAnalysis
   class KPIComputer
+    ORTHODOX = 'orthodox'.freeze
+    SOUTHPAW = 'southpaw'.freeze
+
     def initialize(landmarks)
       @landmarks = landmarks
     end
@@ -8,14 +11,14 @@ module PostureAnalysis
       {
         foot_shoulders_width_ratio:,
         foot_depth:,
-        left_foot_angle_degree:,
-        right_foot_angle_degree:,
+        lead_foot_angle_degree:,
+        rear_foot_angle_degree:,
         left_hand_height_ratio:,
         right_hand_height_ratio:,
         left_lateral_elbow_spread:,
         right_lateral_elbow_spread:,
         chin_tuck:
-      }
+      }.compact
     end
 
     private
@@ -30,38 +33,45 @@ module PostureAnalysis
     end
 
     def foot_depth
-      # to do
+      landmarks.lead_heel.y - landmarks.rear_foot_index.y
     end
 
-    def left_foot_angle_degree
-      heel = landmarks.left_heel
-      index = landmarks.left_index
+    def lead_foot_angle_degree
+      heel = landmarks.lead_heel
+      index = landmarks.lead_foot_index
 
       foot_angle_degree(heel:, index:)
     end
 
-    def right_foot_angle_degree
-      heel = landmarks.right_heel
-      index = landmarks.right_index
+    def rear_foot_angle_degree
+      heel = landmarks.rear_heel
+      index = landmarks.rear_foot_index
 
       foot_angle_degree(heel:, index:)
     end
 
     def left_hand_height_ratio
-      hand_height_ratio(landmarks.left_wrist)
+      hand_height_ratio(landmarks.left_wrist.y)
     end
 
     def right_hand_height_ratio
-      hand_height_ratio(landmarks.right_wrist)
+      hand_height_ratio(landmarks.right_wrist.y)
     end
 
-
     def left_lateral_elbow_spread
-      lateral_elbow_spread(landmarks.left_elbow, landmarks.left_shoulder)
+      shoulder = landmarks.left_shoulder
+      hip = landmarks.left_hip
+      elbow = landmarks.left_elbow
+
+      calculate_elbow_body_angle(shoulder:, hip:, elbow:)
     end
 
     def right_lateral_elbow_spread
-      lateral_elbow_spread(landmarks.right_elbow, landmarks.right_shoulder)
+      shoulder = landmarks.right_shoulder
+      hip = landmarks.right_hip
+      elbow = landmarks.right_elbow
+
+      calculate_elbow_body_angle(shoulder:, hip:, elbow:)
     end
 
     def chin_tuck
@@ -72,18 +82,8 @@ module PostureAnalysis
     # method below offer a convenient way to perform differents kind of computation
     #
 
-    #
-    # expects @elbow and @shoulder of the same side
-    #
-    def lateral_elbow_spread(elbow, shoulder)
-      width = (landmarks.left_shoulder.x - landmarks.right_shoulder.x).abs
-      (elbow.x - shoulder.x) / width
-    end
-
-    def hand_height_ratio(wrist)
-      wrist_height = wrist.y
-
-      (mean_shoulder_height - wrist_height) / shoulder_nose_vertical_distance
+    def hand_height_ratio(wrist_y)
+      (mean_shoulder_height - wrist_y) / shoulder_nose_vertical_distance
     end
 
     def euclidean_distance(landmark1, landmark2)
@@ -97,7 +97,7 @@ module PostureAnalysis
       dx = index.x - heel.x
       dy = index.y - heel.y
 
-      angle_rad = Math.atan2(dy, dx)
+      angle_rad = Math.atan2(dx, dy)
       angle_rad * (180 / Math::PI)
     end
 
@@ -107,6 +107,27 @@ module PostureAnalysis
 
     def shoulder_nose_vertical_distance
       @shoulder_nose_vertical_distance ||= mean_shoulder_height - landmarks.nose.y
+    end
+
+    def calculate_elbow_body_angle(shoulder:, hip:, elbow:)
+      # 1. Création des vecteurs (Vecteur Épaule -> Hanche et Épaule -> Coude)
+      ux = hip.x - shoulder.x
+      uy = hip.y - shoulder.y
+
+      vx = elbow.x - shoulder.x
+      vy = elbow.y - shoulder.y
+
+      # 2. Calcul du produit scalaire et des magnitudes
+      dot_product = (ux * vx) + (uy * vy)
+      mag_u = Math.sqrt(ux**2 + uy**2)
+      mag_v = Math.sqrt(vx**2 + vy**2)
+
+      # 3. Calcul de l'angle en radians puis conversion en degrés
+      # Le .clamp évite les erreurs de précision flottante
+      cos_theta = (dot_product / (mag_u * mag_v)).clamp(-1.0, 1.0)
+      angle_rad = Math.acos(cos_theta)
+
+      (angle_rad * 180 / Math::PI).round(2)
     end
   end
 end

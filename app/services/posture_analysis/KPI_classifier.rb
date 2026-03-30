@@ -6,9 +6,9 @@ module PostureAnalysis
 
     BENCHMARKS = {
       foot_shoulders_width_ratio: { min: 1.0, max: 1.6 },
-      foot_depth: { min: 0, max: 0 },
-      orthodox_left_foot_angle_degree: { min: 20, max: 45 },
-      orthodox_right_foot_angle_degree: { min: 60, max: 80 },
+      foot_depth: { min: 0, max: 1 },
+      lead_foot_angle_degree: { min: 20, max: 45 },
+      rear_foot_angle_degree: { min: 60, max: 80 },
       southpaw_left_foot_angle_degree: { min: 20, max: 45 },
       southpaw_right_foot_angle_degree: { min: 60, max: 80 },
       left_hand_height_ratio: { min: -0.07, max: 0.8 },
