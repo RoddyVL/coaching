@@ -36,11 +36,12 @@ fileUploader.addEventListener('change', function () {
   }
 })
 
-button.addEventListener("click", ()=> {
+button.addEventListener("click", async ()=> {
   if (fileType === 'image') {
     imageAnalysis(image, canvas)
   } 
   else if (fileType === 'video') {
-    videoAnalysis(video, canvas)
+    await videoAnalysis(video, canvas)
+    video.controls = true;
   }
 });
