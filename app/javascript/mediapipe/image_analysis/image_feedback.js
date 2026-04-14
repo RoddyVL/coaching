@@ -1,3 +1,5 @@
+const output = document.getElementById('data_output')
+
 export const imageFeedback = async (result) => {
   try {
     const response = await fetch("/pose_landmarks", {
@@ -10,7 +12,6 @@ export const imageFeedback = async (result) => {
   });
 
   const data = await response.json();
-  console.log(data)
   output.textContent = data.feedback.join("\n");
 
   } catch (err) {
