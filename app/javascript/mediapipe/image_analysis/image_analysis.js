@@ -10,6 +10,5 @@ export const imageAnalysis = async (image, canvas) => {
 
     const poseLandmarker = await createPoseLandmarker();
     const result = await poseLandmarker.detect(image);
-
     draw_landmarks(result.landmarks[0], ctx);
 }
