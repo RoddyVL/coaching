@@ -3,6 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 
 import { imageAnalysis } from './mediapipe/image_analysis/image_analysis.js'
+import { imageFeedback } from './mediapipe/image_analysis/image_feedback.js'
 import { videoAnalysis } from './mediapipe/video_analysis/video_analysis.js'
 
 const image = document.getElementById('image_input')
@@ -36,9 +37,10 @@ fileUploader.addEventListener('change', function () {
   }
 })
 
-button.addEventListener("click", async ()=> {
+button.addEventListener("click", async () => {
   if (fileType === 'image') {
-    imageAnalysis(image, canvas)
+    const result = await imageAnalysis(image, canvas)
+    imageFeedback(result)
   } 
   else if (fileType === 'video') {
     await videoAnalysis(video, canvas)
