@@ -1,5 +1,4 @@
 import { Application } from "@hotwired/stimulus"
-import './mediapipe'
 
 const application = Application.start()
 
