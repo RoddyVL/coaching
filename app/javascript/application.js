@@ -43,7 +43,6 @@ button.addEventListener("click", async () => {
     imageFeedback(result)
   } 
   else if (fileType === 'video') {
-    await videoAnalysis(video, canvas)
-    video.controls = true;
+    const result =await videoAnalysis(video, canvas);
   }
 });

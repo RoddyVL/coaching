@@ -5,28 +5,54 @@ import { DrawingUtils } from "https://cdn.skypack.dev/@mediapipe/tasks-vision@0.
 const videoDetector = await poseLandmarker();
 const ctx = canvas.getContext('2d');
 const video = document.getElementById('video_input')
+let sequence = [];
+let lastProcessedTime = 0;
+const interval = 200;
 
 export const videoAnalysis = async (video, canvas) => {
     canvas.width = video.videoWidth
     canvas.height = video.videoHeight
-  
-    video.addEventListener("play", () => {
-        processVideo();
-    });
+    
+    video.play()
+
+    const result = await processVideo();
+    return result
 }
 
 const drawUtils = new DrawingUtils(ctx);
 
-async function processVideo() {
-  if (video.paused || video.ended) return;
-     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const nowInMs = performance.now();
+function processVideo() {
+  return new Promise((resolve) => {
 
-    const results = videoDetector.detectForVideo(video, nowInMs);
+    function loop() {
+      if (video.ended) {
+        resolve(sequence);
+        return;
+      }
 
-    if (results.landmarks.length > 0) {
-        drawLandmarker(results.landmarks[0], drawUtils)
-    } 
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  requestAnimationFrame(processVideo);
+      const timestamp = video.currentTime * 1000;
+      const results = videoDetector.detectForVideo(video, timestamp);
+
+      if (results.landmarks.length > 0) {
+        const landmarks = results.landmarks[0];
+
+        drawLandmarker(landmarks, drawUtils);
+
+        if (timestamp - lastProcessedTime > interval) {
+            lastProcessedTime = timestamp;
+
+            sequence.push({
+                timestamp,
+                landmarks
+            });
+        }
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  });
 }
