@@ -2,7 +2,7 @@ const output = document.getElementById('data_output')
 
 export const imageFeedback = async (result) => {
   try {
-    const response = await fetch("/pose_landmarks", {
+    const response = await fetch("/image_analysis", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import "controllers"
 import { imageAnalysis } from './mediapipe/image_analysis/image_analysis.js'
 import { imageFeedback } from './mediapipe/image_analysis/image_feedback.js'
 import { videoAnalysis } from './mediapipe/video_analysis/video_analysis.js'
+import { videoFeedback } from './mediapipe/video_analysis/video_feedback.js'
 
 const image = document.getElementById('image_input')
 const video = document.getElementById('video_input')
@@ -43,6 +44,7 @@ button.addEventListener("click", async () => {
     imageFeedback(result)
   } 
   else if (fileType === 'video') {
-    const result =await videoAnalysis(video, canvas);
+    const result = await videoAnalysis(video, canvas);
+    videoFeedback(result)
   }
 });

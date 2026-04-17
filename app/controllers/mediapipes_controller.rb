@@ -2,9 +2,10 @@ class MediapipesController < ApplicationController
   protect_from_forgery with: :null_session
 
   def index
+    # here only for the view index.html.erb
   end
 
-  def analysis
+  def image_analysis
     orchestrator = PostureAnalysis::AnalysisOrchestrator.new(
       landmarks_normalizer: PostureAnalysis::NormalizeLandmarks,
       kpi_computer: PostureAnalysis::KPIComputer,
@@ -14,6 +15,11 @@ class MediapipesController < ApplicationController
     )
 
     feedback = orchestrator.call
+    render json: { feedback: }
+  end
+
+  def video_analysis
+    feedback = "video analysis method reach"
     render json: { feedback: }
   end
 
