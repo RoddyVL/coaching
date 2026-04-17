@@ -1,8 +1,8 @@
 const output = document.getElementById('data_output')
 
-export const imageFeedback = async (result) => {
+export const videoFeedback = async (result) => {
   try {
-    const response = await fetch("/image_analysis", {
+    const response = await fetch("/video_analysis", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

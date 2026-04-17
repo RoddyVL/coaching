@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "mediapipes#index"
   resources :mediapipes
-  post "/pose_landmarks", to: "mediapipes#analysis"
+  post "/image_analysis", to: "mediapipes#image_analysis"
+  post "/video_analysis", to: "mediapipes#video_analysis"
 end
