@@ -19,7 +19,15 @@ class MediapipesController < ApplicationController
   end
 
   def video_analysis
-    feedback = "video analysis method reach"
+      orchestrator = PostureAnalysis::VideoAnalysis::AnalysisOrchestrator.new(
+      landmarks_normalizer: PostureAnalysis::NormalizeLandmarks,
+      kpi_computer: PostureAnalysis::KPIComputer,
+      kpi_classifier: PostureAnalysis::KPIClassifier,
+      feedback_generator: PostureAnalysis::FeedbackGenerator,
+      params: safe_params
+    )
+
+    feedback = orchestrator.call
     render json: { feedback: }
   end
 
