@@ -1,5 +1,6 @@
 module PostureAnalysis
   class NormalizeLandmarks
+    attr_reader :timestamp
     ORTHODOX = 'orthodox'.freeze
     LANDMARKS = %i[
       nose
@@ -22,9 +23,10 @@ module PostureAnalysis
 
     NORMALIZE_PARTS = %i[ankle foot_index heel].freeze
 
-    def initialize(params)
-      @landmarks = params[:landmarks]
-      @stance = params[:stance]
+    def initialize(landmarks:, stance:, timestamp: nil)
+      @landmarks = landmarks
+      @stance = stance
+      @timestamp = timestamp
     end
 
     LANDMARKS.each_with_index do |name, index|
