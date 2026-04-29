@@ -14,8 +14,20 @@ module PostureAnalysis
                     landmark = landmarks_normalizer.new(
                         landmarks: landmarks[:landmarks], 
                         stance: params[:stance],
-                        timestamp: landmarks[:timestamp]
+                        timestamp: landmarks[:timestamp].round(2)
                         )
+                end
+             
+                kpis = normalize_landmarks.map do |landmarks|
+                    timestamp = landmarks.timestamp.to_s
+                    kpi = kpi_computer.new(landmarks).call
+                    { timestamp => kpi }
+                end
+
+                classify_kpis = kpis.map do |frame|
+                    key = frame.keys.first
+                    value = frame.values.first
+                    { key => kpi_classifier.new(value).call }
                 end
             end
 
