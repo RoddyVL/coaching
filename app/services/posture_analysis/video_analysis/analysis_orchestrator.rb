@@ -18,6 +18,7 @@ module PostureAnalysis
                         )
                 end
              
+                binding.irb
                 kpis = normalize_landmarks.map do |landmarks|
                     timestamp = landmarks.timestamp.to_s
                     kpi = kpi_computer.new(landmarks).call
@@ -25,14 +26,34 @@ module PostureAnalysis
                 end
 
                 classify_kpis = kpis.map do |frame|
-                    key = frame.keys.first
-                    value = frame.values.first
-                    { key => kpi_classifier.new(value).call }
+                    timestamp = frame.keys.first
+                    classify_kpi = frame.values.first
+                    { :timestamp => timestamp, :classify_kpis => kpi_classifier.new(classify_kpi).call }
                 end
+
+                binding.irb
+                group_by_kpi(classify_kpis)
             end
 
             private
             attr_reader :params, :landmarks_normalizer, :kpi_computer, :kpi_classifier, :feedback_generator
+
+            def group_by_kpi(frames)
+                result = Hash.new { |h, k| h[k] = [] }
+
+                frames.each do |frame|
+                    timestamp = frame[:timestamp].to_f
+
+                    frame[:classify_kpis].each do |kpi, value|
+                    result[kpi] << {
+                        timestamp: timestamp,
+                        value: value
+                    }
+                    end
+                end
+
+                result
+            end
         end
     end
 end
