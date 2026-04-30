@@ -12,7 +12,6 @@ const video = document.getElementById('video_input')
 
 const canvas = document.getElementById("canvas");
 const fileUploader = document.querySelector('.file-uploader')
-
 const button = document.getElementById('btn-analysis')
 let fileType = null;
 

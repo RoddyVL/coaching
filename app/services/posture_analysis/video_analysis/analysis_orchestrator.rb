@@ -18,7 +18,6 @@ module PostureAnalysis
                         )
                 end
              
-                binding.irb
                 kpis = normalize_landmarks.map do |landmarks|
                     timestamp = landmarks.timestamp.to_s
                     kpi = kpi_computer.new(landmarks).call
@@ -31,7 +30,6 @@ module PostureAnalysis
                     { :timestamp => timestamp, :classify_kpis => kpi_classifier.new(classify_kpi).call }
                 end
 
-                binding.irb
                 group_by_kpi(classify_kpis)
             end
 
