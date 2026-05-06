@@ -10,7 +10,7 @@ class MediapipesController < ApplicationController
       landmarks_normalizer: PostureAnalysis::NormalizeLandmarks,
       kpi_computer: PostureAnalysis::KPIComputer,
       kpi_classifier: PostureAnalysis::KPIClassifier,
-      feedback_generator: PostureAnalysis::FeedbackGenerator,
+      feedback_generator: PostureAnalysis::ImageAnalysis::FeedbackGenerator,
       params: safe_params
     )
 
