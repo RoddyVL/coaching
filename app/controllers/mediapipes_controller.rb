@@ -24,7 +24,8 @@ class MediapipesController < ApplicationController
       kpi_computer: PostureAnalysis::KPIComputer,
       kpi_classifier: PostureAnalysis::KPIClassifier,
       feedback_generator: PostureAnalysis::FeedbackGenerator,
-      params: safe_params
+      params: safe_params,
+      kpi_summarizer: PostureAnalysis::VideoAnalysis::KpiSummarizer
     )
 
     feedback = orchestrator.call
